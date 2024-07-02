@@ -25,6 +25,26 @@ void InputInt(int & number){
     }
 }
 
+//用逗号表达式重写该函数
+void InputInteger(int & num){
+    cout << "请输入一个int型数据" << endl;
+    //逗号表达式整体的值,为最后一个逗号之后的表达式的值
+    //逗号表达式前面的内容会执行，但不影响最终判断的条件。
+    while(cin >> num , !cin.eof()){
+        if(cin.bad()){
+            cout << "cin has broken!" << endl;
+            return;
+        }else if(cin.fail()){
+            cin.clear();
+            cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+            cout << "请输入一个int型数据" << endl;
+        }else{
+            cout << "num" << num << endl;
+            break;
+        }
+    }
+}
+
 void test0(){
     int num = 0;
     InputInt(num);
