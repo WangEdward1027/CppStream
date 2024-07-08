@@ -1,5 +1,7 @@
-//map实现词频字典，只统计单词字母，去除数字和其他符号
-//由于map的自动排序功能, 效率比起vector大幅提升。 (插入时查找遍历map的红黑树速度远大于遍历线性的vector)
+//1.map实现词频字典，只统计单词字母，去除数字和其他符号
+//2.由于map的自动排序功能, 效率比起vector大幅提升。 
+//(插入时查找遍历map的红黑树速度远大于遍历线性的vector)
+//3.map的插入不需要判空,直接++_dict[word]。不存在的会自动插入
 
 #include <iostream> 
 #include <map>
@@ -52,11 +54,7 @@ void Dictionary::read(const string & filename){
             if(alphabet == false)   continue; //不是字母,不计入词频字典
     
             //2.插入到map
-            if(_dict.count(word) == 0){
-                _dict.insert(pair<string,int>(word,1));
-            }else{
-                ++_dict[word];
-            }
+            ++_dict[word];
         }
     }
     cout << "读取完毕。" << endl;
