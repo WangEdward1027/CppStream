@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <string.h>
+#include <limits>
 using std::cin;
 using std::cout;
 using std::endl;
@@ -17,7 +18,7 @@ void test1(){
     }
 
     char buff[100] = {0};
-    while(ifs.getline(buff, sizeof(buff))){
+    while(ifs.getline(buff, sizeof(buff))){  //默认以\n作为分隔符
         cout << buff << endl;
         memset(buff, 0, sizeof(buff)); //完成最后一次读取后清空缓冲区buff
     }
@@ -31,7 +32,7 @@ void test2(){
     }
 
     string line;
-    while(getline(ifs,line)){
+    while(getline(ifs,line)){ //默认以\n作为分隔符
         cout << line << endl;
     }
 }
@@ -40,19 +41,20 @@ void test2(){
 void test3(){
     ifstream ifs("test.txt");
     char buff[100]= {0};
-    ifs.getline(buff, sizeof(buff));
+    ifs.getline(buff, sizeof(buff),' '); //以空格作为分隔符
     cout << buff << endl;
-    cin.getline(buff, sizeof(buff));
+    cin.getline(buff, sizeof(buff), ' '); //以空格作为分隔符
     cout << buff << endl;
+    cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');//清空cin输入缓冲区
 }
 
 //只读一行,读取ifs和cin
 void test4(){
     ifstream ifs("test.txt");
     string line;
-    getline(ifs, line);
+    getline(ifs, line, ' '); //以空格作为分隔符
     cout << line << endl;;
-    getline(cin, line);
+    getline(cin, line, ' '); //以空格作为分隔符
     cout << line << endl;;
 }
 
