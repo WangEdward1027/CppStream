@@ -79,7 +79,7 @@ void TextQuery::query(const string & word){
 int main(int argc, char * argv[])
 {
     if(argc != 3){
-        cout << "Usage: ./程序名 文件名 查询单词" << endl;
+        cout << "Usage: ./程序名 要查询的文件名 要查询的单词" << endl;
         cout << "请重试" << endl;
         return 1;
     }
