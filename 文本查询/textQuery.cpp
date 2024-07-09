@@ -33,35 +33,31 @@ void TextQuery::readFile(const string & filename){
     ifstream ifs(filename);
     if(!ifs.good()){
         cerr << filename << " open failed." << endl;
+        return;
     }
     
     string line;
     int lineNumber = 0;
-    while(getline(ifs, line)){
+    while(getline(ifs, line)){   //先读入一行
         ++lineNumber;
         //1.将每行内容存储到vector
         _lines.push_back(line);
         
+        //2.处理行:去除标点符号和数字,非字母被替换为空格
+        for(auto & ch : line){
+            if(!isalpha(ch)){
+                ch = ' ';
+            }
+        }    
+
         istringstream iss(line);
         string word;
-        while(iss >> word){ //先读入一行,再对一行中的每个单词进行处理
-            //2.处理单词:标点符号去掉
-            string cleanword;
-            for(size_t i = 0; i < word.size(); ++i){
-                if(isalpha(word[i])){ //仅统计字母
-                    cleanword += word[i];
-                }
-            }          
-
-            //3.插入map
-            if(_dict.count(cleanword) == 0){
-                _dict.insert(pair<string,int>(cleanword,1));
-            }else{
-                ++_dict[cleanword];
-            }
+        while(iss >> word){  
+            //3.插入map:不存在的word会直接插入{word,0}
+            ++_dict[word];
             
             //4.记录单词行号:将行号插入对应单词的set中
-            _wordNumbers[cleanword].insert(lineNumber);
+            _wordNumbers[word].insert(lineNumber);
         }
     }
     ifs.close();   
@@ -72,10 +68,10 @@ void TextQuery::query(const string & word){
     //1.输出词频
     cout << "element " << word << " occurs "  <<_dict[word]  << " times." << endl;
     //2.输出单词所在行号
-    for(auto & ele : _wordNumbers[word]){
-        cout << "(line "<< ele << ") ";
+    for(auto & lines : _wordNumbers[word]){ //_wordNumbers[word]是set<int>
+        cout << "(line "<< lines << ") ";
         //3.输出该行号的内容
-        cout << _lines[ele-1] << endl;       
+        cout << _lines[lines-1] << endl;       
     }
     cout << "-----------------------------" << endl;
 }
